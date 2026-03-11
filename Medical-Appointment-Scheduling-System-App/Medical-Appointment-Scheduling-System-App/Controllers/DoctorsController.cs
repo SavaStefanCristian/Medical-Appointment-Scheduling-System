@@ -63,7 +63,11 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
             _context.Doctors.Add(newDoctor);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(GetDoctors), new { id = newDoctor.Id }, newDoctor);
+            var responsePayload = new DoctorResponseDto(newDoctor.Id, newDoctor.Name, newDoctor.Specialty, newDoctor.UserId);
+
+            return CreatedAtAction(nameof(GetDoctors), new { id = newDoctor.Id }, responsePayload);
         }
     }
+
+    public record DoctorResponseDto(int Id, string Name, string Specialty, int UserId);
 }
