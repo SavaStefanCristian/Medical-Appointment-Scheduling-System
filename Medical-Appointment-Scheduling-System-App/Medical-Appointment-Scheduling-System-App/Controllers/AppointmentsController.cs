@@ -29,7 +29,6 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
             return Ok(response);
         }
 
-        // TICHET #4: Crearea programării (POST /api/appointments)
         [HttpPost]
         public async Task<IActionResult> CreateAppointment([FromBody] CreateAppointmentDto dto)
         {
