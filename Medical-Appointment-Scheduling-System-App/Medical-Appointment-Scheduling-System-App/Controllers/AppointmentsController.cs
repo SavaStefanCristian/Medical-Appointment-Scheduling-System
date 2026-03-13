@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Medical_Appointment_Scheduling_System_App.Data;
 using Medical_Appointment_Scheduling_System_App.Models;
 using Medical_Appointment_Scheduling_System_App.DTOs;
@@ -8,6 +9,7 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AppointmentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -20,8 +22,32 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAppointment(int id)
         {
-            var appointment = await _context.Appointments.FindAsync(id);
+            var appointment = await _context.Appointments
+                .Include(a => a.Patient)
+                .Include(a => a.Doctor)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
             if (appointment == null) return NotFound();
+
+            var loggedInUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                              ?? User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+
+            var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+
+            if (userRole == "Patient")
+            {
+                if (appointment.Patient == null || appointment.Patient.UserId.ToString() != loggedInUserId)
+                {
+                    return Forbid();
+                }
+            }
+            else if (userRole == "Doctor")
+            {
+                if (appointment.Doctor == null || appointment.Doctor.UserId.ToString() != loggedInUserId)
+                {
+                    return Forbid();
+                }
+            }
 
             var response = new AppointmentResponseDto(
                 appointment.Id, appointment.DoctorId, appointment.PatientId, appointment.AppointmentDate, appointment.Status);
@@ -91,6 +117,7 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
         }
 
         [HttpPatch("{id}/status")]
+        [Authorize(Roles = "Doctor, Admin")]
         public async Task<IActionResult> UpdateAppointmentStatus(int id, [FromBody] UpdateAppointmentStatusDto dto)
         {
             var appointment = await _context.Appointments.FindAsync(id);
