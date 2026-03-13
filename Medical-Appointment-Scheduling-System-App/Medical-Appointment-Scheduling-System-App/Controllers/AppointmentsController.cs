@@ -70,6 +70,58 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
 
             return CreatedAtAction(nameof(GetAppointment), new { id = newAppointment.Id }, responsePayload);
         }
+
+        [HttpGet("doctor/{doctorId}")]
+        public async Task<IActionResult> GetDoctorAppointments(int doctorId)
+        {
+            var doctorExists = await _context.Doctors.AnyAsync(d => d.Id == doctorId);
+            if (!doctorExists)
+            {
+                return NotFound($"Eroare: Doctorul cu ID-ul {doctorId} nu a fost găsit.");
+            }
+
+            var appointments = await _context.Appointments
+                .Where(a => a.DoctorId == doctorId)
+                .OrderBy(a => a.AppointmentDate)
+                .Select(a => new AppointmentResponseDto(
+                    a.Id, a.DoctorId, a.PatientId, a.AppointmentDate, a.Status))
+                .ToListAsync();
+
+            return Ok(appointments);
+        }
+
+        [HttpPatch("{id}/status")]
+        public async Task<IActionResult> UpdateAppointmentStatus(int id, [FromBody] UpdateAppointmentStatusDto dto)
+        {
+            var appointment = await _context.Appointments.FindAsync(id);
+            if (appointment == null)
+            {
+                return NotFound($"Eroare: Programarea cu ID-ul {id} nu a fost găsită.");
+            }
+
+            var terminalStatuses = new[] { "Cancelled", "Completed" };
+            if (terminalStatuses.Contains(appointment.Status, StringComparer.OrdinalIgnoreCase))
+            {
+                return BadRequest($"Eroare: Programarea este deja în stadiul '{appointment.Status}' și nu mai poate fi modificată.");
+            }
+
+            var allowedStatuses = new[] { "Confirmed", "Cancelled", "Completed" };
+            var requestedStatus = dto.Status.Trim();
+
+            if (!allowedStatuses.Contains(requestedStatus, StringComparer.OrdinalIgnoreCase))
+            {
+                return BadRequest($"Status invalid. Statusurile permise sunt: {string.Join(", ", allowedStatuses)}");
+            }
+
+            appointment.Status = allowedStatuses.First(s => s.Equals(requestedStatus, StringComparison.OrdinalIgnoreCase));
+
+            await _context.SaveChangesAsync();
+
+            var responsePayload = new AppointmentResponseDto(
+                appointment.Id, appointment.DoctorId, appointment.PatientId, appointment.AppointmentDate, appointment.Status);
+
+            return Ok(responsePayload);
+        }
     }
 
     public record AppointmentResponseDto(int Id, int DoctorId, int PatientId, DateTime AppointmentDate, string Status);
