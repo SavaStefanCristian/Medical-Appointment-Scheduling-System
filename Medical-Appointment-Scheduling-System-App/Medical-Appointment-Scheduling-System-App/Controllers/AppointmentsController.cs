@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Medical_Appointment_Scheduling_System_App.Data;
 using Medical_Appointment_Scheduling_System_App.Models;
 using Medical_Appointment_Scheduling_System_App.DTOs;
@@ -8,6 +9,7 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class AppointmentsController : ControllerBase
     {
         private readonly ApplicationDbContext _context;
@@ -91,6 +93,7 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
         }
 
         [HttpPatch("{id}/status")]
+        [Authorize(Roles = "Doctor, Admin")]
         public async Task<IActionResult> UpdateAppointmentStatus(int id, [FromBody] UpdateAppointmentStatusDto dto)
         {
             var appointment = await _context.Appointments.FindAsync(id);
