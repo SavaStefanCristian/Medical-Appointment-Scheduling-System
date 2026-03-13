@@ -4,6 +4,9 @@ using Microsoft.AspNetCore.Authorization;
 using Medical_Appointment_Scheduling_System_App.Data;
 using Medical_Appointment_Scheduling_System_App.Models;
 using Medical_Appointment_Scheduling_System_App.DTOs;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Medical_Appointment_Scheduling_System_App.Controllers
 {
@@ -142,6 +145,52 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
 
             appointment.Status = allowedStatuses.First(s => s.Equals(requestedStatus, StringComparison.OrdinalIgnoreCase));
 
+            await _context.SaveChangesAsync();
+
+            var responsePayload = new AppointmentResponseDto(
+                appointment.Id, appointment.DoctorId, appointment.PatientId, appointment.AppointmentDate, appointment.Status);
+
+            return Ok(responsePayload);
+        }
+
+        [HttpPatch("{id}/cancel")]
+        [Authorize(Roles = "Patient, Admin")]
+        public async Task<IActionResult> CancelAppointment(int id)
+        {
+            var appointment = await _context.Appointments
+                .Include(a => a.Patient)
+                .FirstOrDefaultAsync(a => a.Id == id);
+
+            if (appointment == null)
+            {
+                return NotFound($"Eroare: Programarea cu ID-ul {id} nu a fost găsită.");
+            }
+
+            var loggedInUserId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                              ?? User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+            var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
+
+            if (userRole == "Patient" && (appointment.Patient == null || appointment.Patient.UserId.ToString() != loggedInUserId))
+            {
+                return Forbid();
+            }
+
+            if (appointment.Status.Equals("Cancelled", StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Eroare: Programarea este deja anulată.");
+            }
+
+            if (appointment.Status.Equals("Completed", StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Eroare: Programarea este deja finalizată.");
+            }
+
+            if (appointment.AppointmentDate < DateTime.Now)
+            {
+                return BadRequest("Eroare: Nu puteți anula o programare a cărei dată a trecut deja.");
+            }
+
+            appointment.Status = "Cancelled";
             await _context.SaveChangesAsync();
 
             var responsePayload = new AppointmentResponseDto(
