@@ -82,6 +82,7 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
 
             var appointments = await _context.Appointments
                 .Where(a => a.DoctorId == doctorId)
+                .OrderBy(a => a.AppointmentDate)
                 .Select(a => new AppointmentResponseDto(
                     a.Id, a.DoctorId, a.PatientId, a.AppointmentDate, a.Status))
                 .ToListAsync();
@@ -98,13 +99,22 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
                 return NotFound($"Eroare: Programarea cu ID-ul {id} nu a fost găsită.");
             }
 
+            var terminalStatuses = new[] { "Cancelled", "Completed" };
+            if (terminalStatuses.Contains(appointment.Status, StringComparer.OrdinalIgnoreCase))
+            {
+                return BadRequest($"Eroare: Programarea este deja în stadiul '{appointment.Status}' și nu mai poate fi modificată.");
+            }
+
             var allowedStatuses = new[] { "Confirmed", "Cancelled", "Completed" };
-            if (!allowedStatuses.Contains(dto.Status))
+            var requestedStatus = dto.Status.Trim();
+
+            if (!allowedStatuses.Contains(requestedStatus, StringComparer.OrdinalIgnoreCase))
             {
                 return BadRequest($"Status invalid. Statusurile permise sunt: {string.Join(", ", allowedStatuses)}");
             }
 
-            appointment.Status = dto.Status;
+            appointment.Status = allowedStatuses.First(s => s.Equals(requestedStatus, StringComparison.OrdinalIgnoreCase));
+
             await _context.SaveChangesAsync();
 
             var responsePayload = new AppointmentResponseDto(
