@@ -135,8 +135,14 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
                 return BadRequest($"Eroare: Programarea este deja în stadiul '{appointment.Status}' și nu mai poate fi modificată.");
             }
 
-            var allowedStatuses = new[] { "Confirmed", "Cancelled", "Completed" };
             var requestedStatus = dto.Status.Trim();
+
+            if (requestedStatus.Equals("Cancelled", StringComparison.OrdinalIgnoreCase))
+            {
+                return BadRequest("Eroare: Pentru a anula o programare, vă rugăm să folosiți endpoint-ul dedicat: PATCH /api/appointments/{id}/cancel");
+            }
+
+            var allowedStatuses = new[] { "Confirmed", "Completed" };
 
             if (!allowedStatuses.Contains(requestedStatus, StringComparer.OrdinalIgnoreCase))
             {
@@ -154,11 +160,12 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
         }
 
         [HttpPatch("{id}/cancel")]
-        [Authorize(Roles = "Patient, Admin")]
+        [Authorize(Roles = "Patient, Doctor, Admin")]
         public async Task<IActionResult> CancelAppointment(int id)
         {
             var appointment = await _context.Appointments
                 .Include(a => a.Patient)
+                .Include(a => a.Doctor)
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (appointment == null)
@@ -171,6 +178,11 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
             var userRole = User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value;
 
             if (userRole == "Patient" && (appointment.Patient == null || appointment.Patient.UserId.ToString() != loggedInUserId))
+            {
+                return Forbid();
+            }
+
+            if (userRole == "Doctor" && (appointment.Doctor == null || appointment.Doctor.UserId.ToString() != loggedInUserId))
             {
                 return Forbid();
             }
