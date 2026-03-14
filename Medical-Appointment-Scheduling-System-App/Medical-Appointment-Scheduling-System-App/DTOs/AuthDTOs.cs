@@ -2,7 +2,7 @@
 
 namespace Medical_Appointment_Scheduling_System_App.DTOs
 {
-    public record RegisterDto(
+    public record CreatePatientAccountAndProfileDto(
         [Required(ErrorMessage = "Numele este obligatoriu.")]
         [MinLength(3, ErrorMessage = "Numele trebuie să aibă cel puțin 3 litere.")]
         string Name,
