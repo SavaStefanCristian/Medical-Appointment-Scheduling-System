@@ -32,41 +32,6 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
 
             return Ok(doctors);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateDoctor([FromBody] CreateDoctorDto doctorDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var user = await _context.Users.FindAsync(doctorDto.UserId);
-
-            if (user == null)
-            {
-                return BadRequest("Eroare: Nu există niciun User cu acest Id în baza de date.");
-            }
-
-            if (user.Role != "Doctor")
-            {
-                return BadRequest($"Eroare: User-ul specificat are rolul de '{user.Role}', nu de 'Doctor'. Nu poate fi adăugat ca medic.");
-            }
-
-            var newDoctor = new Doctor
-            {
-                Name = doctorDto.Name,
-                Specialty = doctorDto.Specialty,
-                UserId = doctorDto.UserId
-            };
-
-            _context.Doctors.Add(newDoctor);
-            await _context.SaveChangesAsync();
-
-            var responsePayload = new DoctorResponseDto(newDoctor.Id, newDoctor.Name, newDoctor.Specialty, newDoctor.UserId);
-
-            return CreatedAtAction(nameof(GetDoctors), new { id = newDoctor.Id }, responsePayload);
-        }
     }
 
     public record DoctorResponseDto(int Id, string Name, string Specialty, int UserId);
