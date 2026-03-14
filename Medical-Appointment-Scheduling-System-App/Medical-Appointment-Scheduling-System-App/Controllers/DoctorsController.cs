@@ -33,6 +33,4 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
             return Ok(doctors);
         }
     }
-
-    public record DoctorResponseDto(int Id, string Name, string Specialty, int UserId);
 }
