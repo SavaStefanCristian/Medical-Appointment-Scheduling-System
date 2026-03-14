@@ -22,36 +22,48 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> Register([FromBody] RegisterDto dto)
+        public async Task<IActionResult> Register([FromBody] CreatePatientAccountAndProfileDto dto)
         {
-            if (!ModelState.IsValid) return BadRequest("Date invalide.");
+            if (!ModelState.IsValid) return BadRequest(ModelState);
 
             if (await _context.Users.AnyAsync(u => u.Email == dto.Email))
-                return Conflict("Eroare: Acest email este deja folosit.");
+                return BadRequest("Eroare: Acest email este deja folosit.");
 
-            var newUser = new User
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            try
             {
-                Email = dto.Email,
-                PasswordHash = PasswordHasher.HashPassword(dto.Password),
-                Role = "Patient"
-            };
+                var newUser = new User
+                {
+                    Email = dto.Email,
+                    PasswordHash = PasswordHasher.HashPassword(dto.Password),
+                    Role = "Patient"
+                };
 
-            _context.Users.Add(newUser);
-            await _context.SaveChangesAsync();
+                _context.Users.Add(newUser);
+                await _context.SaveChangesAsync();
 
-            var newPatient = new Patient
+                var newPatient = new Patient
+                {
+                    Name = dto.Name,
+                    Phone = dto.Phone,
+                    UserId = newUser.Id
+                };
+
+                _context.Patients.Add(newPatient);
+                await _context.SaveChangesAsync();
+
+                await transaction.CommitAsync();
+
+                var accessToken = _jwtService.GenerateToken(newUser.Id.ToString(), newUser.Email, newUser.Role);
+
+                return Created(string.Empty, new AuthResponseDto(accessToken, "Cont creat și autentificare automată cu succes!"));
+            }
+            catch (System.Exception ex)
             {
-                Name = dto.Name,
-                Phone = dto.Phone,
-                UserId = newUser.Id
-            };
-
-            _context.Patients.Add(newPatient);
-            await _context.SaveChangesAsync();
-
-            var accessToken = _jwtService.GenerateToken(newUser.Id.ToString(), newUser.Email, newUser.Role);
-
-            return Ok(new AuthResponseDto(accessToken, "Cont creat și autentificare automată cu succes!"));
+                await transaction.RollbackAsync();
+                return StatusCode(500, $"Eroare internă la crearea contului: {ex.Message}");
+            }
         }
 
         [HttpPost("login")]
