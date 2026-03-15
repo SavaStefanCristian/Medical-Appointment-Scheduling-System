@@ -73,7 +73,8 @@ using (var scope = app.Services.CreateScope())
     catch (Exception ex)
     {
         var logger = services.GetRequiredService<ILogger<Program>>();
-        logger.LogError(ex, "A apãrut o eroare la crearea/migrarea bazei de date.");
+        logger.LogCritical(ex, "A apãrut o eroare la crearea/migrarea bazei de date.");
+        throw;
     }
 }
 
