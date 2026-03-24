@@ -34,3 +34,15 @@ Interfața Swagger expune clar toate endpoint-urile disponibile (Users, Doctors,
 2. Apasă pe butonul "Authorize" (lacătul) din Swagger UI.
 3. Introdu token-ul în căsuță folosind formatul: `Bearer token_aici`
 4. Apasă "Authorize" și testează endpoint-urile protejate.
+
+---
+
+## 🧪 Rularea Testelor Automate (Unit Testing)
+
+Proiectul include o suită de teste unitare scrise cu **xUnit**, care validează logica de business a aplicației (în special fluxurile de Autentificare, Înregistrare și Autorizare pe roluri - cazuri Happy Path și Edge Cases). Baza de date este simulată folosind **SQLite In-Memory** pentru a permite testarea rapidă și izolată a tranzacțiilor, fără a afecta datele reale.
+
+Pentru a rula testele, deschide un terminal în rădăcina proiectului (unde se află fișierul `.sln`) și execută comanda:
+
+```bash
+dotnet test
+```
