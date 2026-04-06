@@ -1,0 +1,11 @@
+<div class="card">
+  <h2>Înregistrează-te</h2>
+  <input [(ngModel)]="name" placeholder="Nume" />
+  <input [(ngModel)]="phone" placeholder="Telefon" />
+  <input [(ngModel)]="email" placeholder="Email" />
+  <input [(ngModel)]="password" placeholder="Parolă" type="password" />
+  <button (click)="register()">Înregistrează-te</button>
+  <p>
+    Ai deja cont? <a routerLink="/login">Login</a>
+  </p>
+</div>
