@@ -9,11 +9,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './register.html',
-  styles: [`
-    .card { padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
-    input { display: block; width: 100%; margin: 8px 0; padding: 8px; }
-    button { width: 100%; padding: 10px; margin-top: 10px; }
-  `]
+  styleUrls: ['./register.css']
 })
 export class Register {
   name = '';
@@ -23,6 +19,7 @@ export class Register {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  errorMessage = '';
   register() {
     const dto: RegisterDto = { name: this.name, phone: this.phone, email: this.email, password: this.password };
     this.authService.register(dto).subscribe({
@@ -30,7 +27,9 @@ export class Register {
         localStorage.setItem('token', res.token);
         this.router.navigate(['/home']);
       },
-      error: err => console.error('Eroare la register', err)
+      error: err => {
+        this.errorMessage = 'Parola sau email gresit!';
+      }
     });
   }
 }

@@ -9,11 +9,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [FormsModule, CommonModule],
   templateUrl: './login.html',
-  styles: [`
-    .card { padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
-    input { display: block; width: 100%; margin: 8px 0; padding: 8px; }
-    button { width: 100%; padding: 10px; margin-top: 10px; }
-  `]
+  styleUrls: ['./login.css']
 })
 export class Login {
   email = '';
@@ -21,13 +17,17 @@ export class Login {
 
   constructor(private authService: AuthService, private router: Router) {}
 
+  errorMessage = '';
+
   login() {
     this.authService.login({ email: this.email, password: this.password }).subscribe({
       next: res => {
         localStorage.setItem('token', res.token);
         this.router.navigate(['/home']);
       },
-      error: err => console.error('Eroare login', err)
+      error: err => {
+        this.errorMessage =  'Parola sau email gresit!';
+      }
     });
   }
 }
