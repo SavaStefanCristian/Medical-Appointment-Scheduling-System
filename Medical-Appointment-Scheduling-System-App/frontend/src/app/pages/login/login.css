@@ -1,7 +1,91 @@
+.page-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  font-family: Arial, sans-serif;
+}
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+}
+
+.card {
+  background: rgba(255, 255, 255, 0.95); /* card semi-transparent */
+  padding: 40px 30px;
+  border-radius: 20px;
+  width: 100%;
+  max-width: 380px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  backdrop-filter: blur(10px); /* blur subtil pentru fundal */
+}
+
+.card h2 {
+  margin-bottom: 25px;
+  color: #333;
+  font-weight: 600;
+}
+
+input {
+  width: 100%;
+  padding: 8px;
+  margin: 15px 0;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 15px;
+  outline: none;
+  transition: 0.3s;
+}
+
+input:focus {
+  border-color: #4facfe;
+  box-shadow: 0 0 8px rgba(79, 172, 254, 0.5);
+}
+
+button {
+  width: 100%;
+  padding: 14px;
+  margin-top: 15px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #4facfe, #00f2fe);
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: linear-gradient(135deg, #3a8de0, #00d9ff);
+}
+
+.card p {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #555;
+}
+
+.card a {
+  color: #4facfe;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+.card a:hover {
+  text-decoration: underline;
+}
+
 .error {
   color: red;
-  margin-top: 10px;
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
 }
-.card { padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
-input { display: block; width: 100%; margin: 8px 0; padding: 8px; }
-button { width: 100%; padding: 10px; margin-top: 10px; }

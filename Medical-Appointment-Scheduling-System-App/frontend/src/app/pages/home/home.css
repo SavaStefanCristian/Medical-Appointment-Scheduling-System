@@ -1,23 +1,100 @@
-.card {
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  text-align: center;
-  background-color: #f8f9fa;
-  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+.home-container {
+  max-width: 2000px;
+  margin: 20px auto;
+  font-family: Arial, sans-serif;
+  background-color: lightblue;
+  padding: 30px;
+  border-radius: 15px;
+  color: #fff;
 }
 
-button {
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.header h1 {
+  font-size: 28px;
+}
+
+.header button {
   padding: 10px 20px;
-  margin-top: 10px;
-  cursor: pointer;
+  font-weight: bold;
   border: none;
-  border-radius: 4px;
-  background-color: #007bff;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #ff6b6b;
+  color: white;
+  transition: 0.2s;
+}
+
+.header button:hover {
+  background-color: #ff4b4b;
+}
+
+.search-panel {
+  display: flex;
+  gap: 15px;
+  margin-bottom: 25px;
+}
+
+.search-panel input,
+.search-panel select {
+  flex: 1;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+  font-size: 16px;
+}
+
+.doctor-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(1000px, 1fr));
+  gap: 20px;
+}
+
+.doctor-card {
+  background: rgba(255, 255, 255, 0.9);
+  color: #333;
+  padding: 15px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 6px 10px rgba(0,0,0,0.15);
+  transition: transform 0.2s;
+}
+
+.doctor-card:hover {
+  transform: translateY(-5px);
+}
+
+.doctor-card h3 {
+  margin: 10px 0 5px 0;
+}
+
+.doctor-card p {
+  margin-bottom: 15px;
+}
+
+.doctor-card button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: #1dd1a1;
   color: white;
   font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
 }
 
-button:hover {
-  background-color: #0056b3;
+.doctor-card button:hover {
+  background-color: #10ac84;
+}
+
+.doctor-img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 10px;
+  background-image: url("https://www.nicepng.com/png/detail/867-8678512_doctor-icon-physician.png");
 }

@@ -1,5 +1,24 @@
-<div class="card">
-  <h2>Bine ai venit!</h2>
-  <p>Ai reușit să te autentifici cu succes.</p>
-  <button (click)="logout()">Logout</button>
+<div class="home-container">
+  <div class="header">
+    <h1>Bine ai venit!</h1>
+    <button (click)="logout()">Logout</button>
+  </div>
+
+  <div class="search-panel">
+    <input type="text" placeholder="Cauta doctor..." [(ngModel)]="searchName" (input)="filterBySpecialty()" />
+    <select [(ngModel)]="selectedSpecialty" (change)="filterBySpecialty()">
+      <option value="">Toate specializarile</option>
+      <option *ngFor="let spec of specialties" [value]="spec">{{ spec }}</option>
+    </select>
+  </div>
+
+  <div class="doctor-list">
+    <div *ngFor="let doc of filteredDoctors" class="doctor-card">
+      <img src="/assets/doctor-icon.png" alt="Doctor Icon" class="doctor-img" />
+      <h3>{{ doc.name }}</h3>
+      <p>Specializare: {{ doc.specialty }}</p>
+      <button (click)="bookAppointment(doc)">Book Appointment</button>
+    </div>
+    <p *ngIf="filteredDoctors.length === 0">Nu exista doctori pentru criteriile selectate.</p>
+  </div>
 </div>
