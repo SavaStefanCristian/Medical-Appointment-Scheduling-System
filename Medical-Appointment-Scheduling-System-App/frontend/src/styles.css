@@ -1,1 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+
+  background-image: url("https://static.vecteezy.com/system/resources/previews/042/231/585/non_2x/health-care-and-abstract-geometric-medical-background-with-icons-concept-and-idea-for-healthcare-technology-innovation-medicine-healthcare-science-design-vector.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  font-family: Arial, sans-serif;
+}
