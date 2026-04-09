@@ -7,6 +7,6 @@
   <p>
     Nu ai cont? <a routerLink="/register">Înregistrează-te</a>
   </p>
+  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 </div>
-<p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
 </div>
