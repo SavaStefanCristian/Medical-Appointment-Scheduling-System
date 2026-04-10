@@ -65,7 +65,6 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
                 return StatusCode(500, $"Eroare internă la crearea contului: {ex.Message}");
             }
         }
-
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto dto)
         {
@@ -78,7 +77,15 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
 
             var accessToken = _jwtService.GenerateToken(user.Id.ToString(), user.Email, user.Role);
 
-            return Ok(new AuthResponseDto(accessToken, "Autentificare cu succes!"));
+            var patient = await _context.Patients
+                .FirstOrDefaultAsync(p => p.UserId == user.Id);
+
+            return Ok(new
+            {
+                token = accessToken,
+                message = "Autentificare cu succes!",
+                patientId = patient?.Id 
+            });
         }
     }
 }

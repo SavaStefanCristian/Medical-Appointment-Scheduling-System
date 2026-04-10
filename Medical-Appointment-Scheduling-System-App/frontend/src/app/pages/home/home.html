@@ -19,6 +19,23 @@
       <p>Specializare: {{ doc.specialty }}</p>
       <button (click)="bookAppointment(doc)">Book Appointment</button>
     </div>
-    <p *ngIf="filteredDoctors.length === 0">Nu exista doctori pentru criteriile selectate.</p>
+
+    <p *ngIf="filteredDoctors.length === 0">
+      Nu exista doctori pentru criteriile selectate.
+    </p>
+  </div>
+</div>
+
+<div class="modal" *ngIf="selectedDoctor">
+  <div class="modal-content">
+    <h2>Programare la {{ selectedDoctor.name }}</h2>
+
+    <input type="datetime-local" [(ngModel)]="appointmentDate" />
+
+    <button (click)="confirmAppointment()">Confirmă</button>
+    <button class="secondary" (click)="selectedDoctor = null">Cancel</button>
+
+    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
+    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
   </div>
 </div>

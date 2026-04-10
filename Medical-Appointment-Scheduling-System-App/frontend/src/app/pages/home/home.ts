@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Doctor, DoctorService } from '../../services/doctor';
+import { AppointmentService } from '../../services/appointment';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -18,7 +19,17 @@ export class Home implements OnInit {
   selectedSpecialty = '';
   searchName = '';
 
-  constructor(private doctorService: DoctorService, private router: Router) {}
+  // 🔹 ADAUGATE
+  selectedDoctor: Doctor | null = null;
+  appointmentDate = '';
+  errorMessage = '';
+  successMessage = '';
+
+  constructor(
+    private doctorService: DoctorService,
+    private router: Router,
+    private appointmentService: AppointmentService // 👈 ADD
+  ) {}
 
   ngOnInit() {
     this.loadDoctors();
@@ -47,7 +58,45 @@ export class Home implements OnInit {
     this.router.navigate(['/login']);
   }
 
+  // 🔹 MODIFICAT (nu mai e alert)
   bookAppointment(doctor: Doctor) {
-    alert(`Programare pentru Dr. ${doctor.name} (UI only)`);
+    this.selectedDoctor = doctor;
+    this.errorMessage = '';
+    this.successMessage = '';
+  }
+
+  // 🔹 ADAUGAT
+  confirmAppointment() {
+    this.errorMessage = '';
+    this.successMessage = '';
+
+    if (!this.appointmentDate) {
+      this.errorMessage = 'Selectează o dată.';
+      return;
+    }
+
+    const selectedDate = new Date(this.appointmentDate);
+    if (selectedDate < new Date()) {
+      this.errorMessage = 'Nu poți selecta o dată din trecut.';
+      return;
+    }
+
+    const patientId = Number(localStorage.getItem('patientId'));
+
+    const dto = {
+      doctorId: this.selectedDoctor!.id,
+      patientId: patientId,
+      appointmentDate: this.appointmentDate
+    };
+
+    this.appointmentService.createAppointment(dto).subscribe({
+      next: () => {
+        this.successMessage = 'Programare creată cu succes!';
+        this.selectedDoctor = null;
+      },
+      error: (err) => {
+        this.errorMessage = err.error || 'Eroare la programare.';
+      }
+    });
   }
 }
