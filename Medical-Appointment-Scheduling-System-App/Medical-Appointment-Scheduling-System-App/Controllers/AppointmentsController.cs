@@ -82,7 +82,7 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
             {
                 DoctorId = dto.DoctorId,
                 PatientId = dto.PatientId,
-                AppointmentDate = dto.AppointmentDate,
+                AppointmentDate = dto.AppointmentDate.ToUniversalTime(),
                 Status = "Pending"
             };
 

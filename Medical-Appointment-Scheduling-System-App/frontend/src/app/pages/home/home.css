@@ -98,3 +98,45 @@
   margin-bottom: 10px;
   background-image: url("https://www.nicepng.com/png/detail/867-8678512_doctor-icon-physician.png");
 }
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+  background: white;
+  color: #333;
+  padding: 30px;
+  margin: 100px auto;
+  width: 300px;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.modal-content input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+.modal-content button {
+  width: 100%;
+  margin-top: 10px;
+}
+
+.modal-content .secondary {
+  background-color: gray;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
+}
