@@ -8,6 +8,14 @@ export interface CreateAppointmentDto {
   appointmentDate: string;
 }
 
+export interface Appointment {
+  id: number;
+  doctorId: number;
+  patientId: number;
+  appointmentDate: string;
+  status: string;
+}
+
 @Injectable({ providedIn: 'root' })
 export class AppointmentService {
 
@@ -21,5 +29,13 @@ export class AppointmentService {
 
   getDoctorAppointments(doctorId: number): Observable<any[]> {
     return this.http.get<any[]>(`${this.baseUrl}/doctor/${doctorId}`);
+  }
+
+  getMyAppointments(): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${this.baseUrl}/my`);
+  }
+
+  cancelAppointment(id: number): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${id}/cancel`, {});
   }
 }

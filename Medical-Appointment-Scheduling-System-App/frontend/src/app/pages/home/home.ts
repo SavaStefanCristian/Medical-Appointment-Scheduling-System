@@ -19,7 +19,6 @@ export class Home implements OnInit {
   selectedSpecialty = '';
   searchName = '';
 
-  // 🔹 ADAUGATE
   selectedDoctor: Doctor | null = null;
   appointmentDate = '';
   errorMessage = '';
@@ -58,14 +57,16 @@ export class Home implements OnInit {
     this.router.navigate(['/login']);
   }
 
-  // 🔹 MODIFICAT (nu mai e alert)
+  goToAppointments() {
+    this.router.navigate(['/appointments']);
+  }
+
   bookAppointment(doctor: Doctor) {
     this.selectedDoctor = doctor;
     this.errorMessage = '';
     this.successMessage = '';
   }
 
-  // 🔹 ADAUGAT
   confirmAppointment() {
     this.errorMessage = '';
     this.successMessage = '';

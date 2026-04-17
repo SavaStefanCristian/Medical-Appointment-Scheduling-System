@@ -51,7 +51,7 @@
 
 .doctor-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(1000px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
   gap: 20px;
 }
 
@@ -96,7 +96,6 @@
   width: 80px;
   height: 80px;
   margin-bottom: 10px;
-  background-image: url("https://www.nicepng.com/png/detail/867-8678512_doctor-icon-physician.png");
 }
 
 .modal {
