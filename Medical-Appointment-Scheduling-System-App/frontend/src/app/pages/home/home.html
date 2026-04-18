@@ -1,6 +1,7 @@
 <div class="home-container">
   <div class="header">
-    <h1>Bine ai venit!</h1>
+    <button (click)="goToAppointments()">My Appointments</button>
+    <h1>Medical-Scheduling</h1>
     <button (click)="logout()">Logout</button>
   </div>
 
@@ -14,7 +15,7 @@
 
   <div class="doctor-list">
     <div *ngFor="let doc of filteredDoctors" class="doctor-card">
-      <img src="/assets/doctor-icon.png" alt="Doctor Icon" class="doctor-img" />
+      <img src="https://www.nicepng.com/png/detail/867-8678512_doctor-icon-physician.png" class="doctor-img" />
       <h3>{{ doc.name }}</h3>
       <p>Specializare: {{ doc.specialty }}</p>
       <button (click)="bookAppointment(doc)">Book Appointment</button>

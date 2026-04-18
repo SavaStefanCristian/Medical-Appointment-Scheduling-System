@@ -22,6 +22,35 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
             _context = context;
         }
 
+        [HttpGet("my")]
+        public async Task<IActionResult> GetMyAppointments()
+        {
+            var userId = User.FindFirst(System.Security.Claims.ClaimTypes.NameIdentifier)?.Value
+                      ?? User.FindFirst(System.IdentityModel.Tokens.Jwt.JwtRegisteredClaimNames.Sub)?.Value;
+
+            var patient = await _context.Patients
+                .FirstOrDefaultAsync(p => p.UserId.ToString() == userId);
+
+            if (patient == null)
+            {
+                return BadRequest("Pacientul nu a fost găsit.");
+            }
+
+            var appointments = await _context.Appointments
+                .Where(a => a.PatientId == patient.Id)
+                .OrderBy(a => a.AppointmentDate)
+                .Select(a => new AppointmentResponseDto(
+                    a.Id,
+                    a.DoctorId,
+                    a.PatientId,
+                    a.AppointmentDate,
+                    a.Status
+                ))
+                .ToListAsync();
+
+            return Ok(appointments);
+        }
+
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAppointment(int id)
         {
