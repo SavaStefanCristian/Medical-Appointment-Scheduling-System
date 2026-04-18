@@ -1,6 +1,29 @@
 <div class="doctor-home">
-  <h1>Doctor Dashboard</h1>
-  <p>Aici vei vedea programările tale.</p>
 
-  <button (click)="logout()">Logout</button>
+  <div class="header">
+    <h1>Doctor Dashboard</h1>
+    <button (click)="logout()">Logout</button>
+  </div>
+
+  <div class="appointments">
+
+    <div *ngFor="let a of appointments" class="card">
+      <h3>Appointment #{{ a.id }}</h3>
+      <p>Patient ID: {{ a.patientId }}</p>
+      <p>Date: {{ a.appointmentDate | date:'short' }}</p>
+      <p>Status: <b>{{ a.status }}</b></p>
+
+      <div class="actions">
+        <button (click)="approve(a.id)">Approve</button>
+        <button (click)="complete(a.id)">Complete</button>
+        <button (click)="cancel(a.id)">Cancel</button>
+      </div>
+    </div>
+
+    <p *ngIf="appointments.length === 0">
+      Nu există programări.
+    </p>
+
+  </div>
+
 </div>

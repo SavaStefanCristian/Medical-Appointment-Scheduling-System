@@ -80,11 +80,15 @@ namespace Medical_Appointment_Scheduling_System_App.Controllers
             var patient = await _context.Patients
                 .FirstOrDefaultAsync(p => p.UserId == user.Id);
 
+            var doctor = await _context.Doctors
+                .FirstOrDefaultAsync(d => d.UserId == user.Id);
+
             return Ok(new
             {
                 token = accessToken,
                 message = "Autentificare cu succes!",
-                patientId = patient?.Id 
+                patientId = patient?.Id,
+                doctorId = doctor?.Id
             });
         }
     }

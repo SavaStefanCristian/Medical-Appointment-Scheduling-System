@@ -36,6 +36,12 @@ export class Login {
           localStorage.removeItem('patientId');
         }
 
+        if (res.doctorId !== undefined && res.doctorId !== null) {
+          localStorage.setItem('doctorId', res.doctorId.toString());
+        } else {
+          localStorage.removeItem('doctorId');
+        }
+
         if (payload.role === 'Doctor') {
           this.router.navigate(['/doctor-home']);
         } else {

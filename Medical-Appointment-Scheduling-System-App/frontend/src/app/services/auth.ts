@@ -18,6 +18,7 @@ export interface AuthResponse {
   token: string;
   message: string;
   patientId?: number;
+  doctorId?: number;
 }
 
 @Injectable({
