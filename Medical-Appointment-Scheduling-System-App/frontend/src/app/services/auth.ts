@@ -17,7 +17,7 @@ export interface LoginDto {
 export interface AuthResponse {
   token: string;
   message: string;
-  patientId: number;
+  patientId?: number;
 }
 
 @Injectable({
