@@ -38,4 +38,8 @@ export class AppointmentService {
   cancelAppointment(id: number): Observable<any> {
     return this.http.patch(`${this.baseUrl}/${id}/cancel`, {});
   }
+
+  updateStatus(id: number, status: string): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/${id}/status`, { status });
+  }
 }
