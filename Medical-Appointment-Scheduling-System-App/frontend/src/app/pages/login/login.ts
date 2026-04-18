@@ -28,14 +28,19 @@ export class Login {
       next: res => {
         localStorage.setItem('token', res.token);
 
-        if (res.patientId) {
+        const payload = JSON.parse(atob(res.token.split('.')[1]));
+
+        if (res.patientId !== undefined && res.patientId !== null) {
           localStorage.setItem('patientId', res.patientId.toString());
+        } else {
+          localStorage.removeItem('patientId');
         }
 
-        // 👉 optional (debug)
-        console.log('Login response:', res);
-
-        this.router.navigate(['/home']);
+        if (payload.role === 'Doctor') {
+          this.router.navigate(['/doctor-home']);
+        } else {
+          this.router.navigate(['/home']);
+        }
       },
       error: err => {
         this.errorMessage = 'Parola sau email gresit!';
