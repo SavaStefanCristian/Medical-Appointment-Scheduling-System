@@ -1,7 +1,9 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 import { AppointmentService } from '../../services/appointment';
+import {Appointment} from '../../services/appointment';
 
 @Component({
   selector: 'app-doctor-home',
@@ -15,7 +17,7 @@ export class DoctorHome implements OnInit {
   private appointmentService = inject(AppointmentService);
 
 
-  appointments: any[] = [];
+  appointments: Appointment[] = [];
   doctorId = 0;
 
   ngOnInit() {
@@ -32,29 +34,29 @@ export class DoctorHome implements OnInit {
 
   loadAppointments() {
     this.appointmentService.getDoctorAppointments(this.doctorId).subscribe({
-      next: data => this.appointments = data,
-      error: err => console.error('Eroare la appointments', err)
+      next: (data: Appointment[]) => this.appointments = data,
+      error: (err: HttpErrorResponse) => console.error('Eroare la appointments', err.message)
     });
   }
 
   approve(id: number) {
     this.appointmentService.updateStatus(id, 'Confirmed').subscribe({
       next: () => this.loadAppointments(),
-      error: err => console.error(err)
+      error: (err: HttpErrorResponse) => console.error(err)
     });
   }
 
   complete(id: number) {
     this.appointmentService.updateStatus(id, 'Completed').subscribe({
       next: () => this.loadAppointments(),
-      error: err => console.error(err)
+      error: (err: HttpErrorResponse) => console.error(err)
     });
   }
 
   cancel(id: number) {
     this.appointmentService.cancelAppointment(id).subscribe({
       next: () => this.loadAppointments(),
-      error: err => console.error(err)
+      error: (err: HttpErrorResponse) => console.error(err)
     });
   }
 

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { Router, RouterModule } from '@angular/router';
+import {HttpErrorResponse} from '@angular/common/http';
 
 
 @Component({
@@ -49,7 +50,7 @@ export class Login {
           this.router.navigate(['/home']);
         }
       },
-      error: err => {
+      error: (err: HttpErrorResponse) => {
         this.errorMessage = 'Parola sau email gresit!';
         console.error(err);
       }

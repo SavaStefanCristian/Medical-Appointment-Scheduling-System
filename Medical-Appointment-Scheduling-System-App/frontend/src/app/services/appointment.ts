@@ -24,23 +24,23 @@ export class AppointmentService {
 
   private baseUrl = `${environment.apiUrl}/Appointments`;
 
-  createAppointment(dto: CreateAppointmentDto): Observable<any> {
-    return this.http.post(this.baseUrl, dto);
+  createAppointment(dto: CreateAppointmentDto): Observable<Appointment> {
+    return this.http.post<Appointment>(this.baseUrl, dto);
   }
 
-  getDoctorAppointments(doctorId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/doctor/${doctorId}`);
+  getDoctorAppointments(doctorId: number): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${this.baseUrl}/doctor/${doctorId}`);
   }
 
   getMyAppointments(): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(`${this.baseUrl}/my`);
   }
 
-  cancelAppointment(id: number): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/${id}/cancel`, {});
+  cancelAppointment(id: number): Observable<Appointment> {
+    return this.http.patch<Appointment>(`${this.baseUrl}/${id}/cancel`, {});
   }
 
-  updateStatus(id: number, status: string): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/${id}/status`, { status });
+  updateStatus(id: number, status: string): Observable<Appointment> {
+    return this.http.patch<Appointment>(`${this.baseUrl}/${id}/status`, { status });
   }
 }

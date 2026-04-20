@@ -4,6 +4,7 @@ import { Doctor, DoctorService } from '../../services/doctor';
 import { AppointmentService } from '../../services/appointment';
 
 import { FormsModule } from '@angular/forms';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
@@ -39,7 +40,7 @@ export class Home implements OnInit {
         this.filteredDoctors = data;
         this.specialties = Array.from(new Set(data.map(d => d.specialty)));
       },
-      error: (err) => console.error('Eroare la preluarea doctorilor', err)
+      error: (err: HttpErrorResponse) => console.error('Eroare la preluarea doctorilor', err)
     });
   }
 
@@ -93,7 +94,7 @@ export class Home implements OnInit {
         this.successMessage = 'Programare creată cu succes!';
         this.selectedDoctor = null;
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.errorMessage = err.error || 'Eroare la programare.';
       }
     });

@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { Appointment, AppointmentService } from '../../services/appointment';
 import { CommonModule } from '@angular/common';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-appointments',
@@ -22,9 +23,9 @@ export class Appointments implements OnInit {
   load() {
     this.service.getMyAppointments().subscribe({
       next: res => this.appointments = res,
-      error: err => {
+      error: (err: HttpErrorResponse) => {
         this.errorMessage = 'Eroare la încărcare';
-        console.error(err);
+        console.error(err.message);
       }
     });
   }
