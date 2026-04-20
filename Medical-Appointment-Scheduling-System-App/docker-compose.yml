@@ -1,8 +1,6 @@
-version: "3.8"
-
 services:
   db:
-    image: postgres:latest
+    image: postgres:18
     container_name: medical-postgres
     environment:
       POSTGRES_USER: postgres
@@ -12,6 +10,11 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d MedicalAppDb"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   backend:
     build:
@@ -24,7 +27,24 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ConnectionStrings__DefaultConnection=Host=db;Database=MedicalAppDb;Username=postgres;Password=${DB_PASSWORD}
     depends_on:
-      - db
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: medical-frontend
+    ports:
+      - "4200:8080"
+    depends_on:
+      backend:
+        condition: service_healthy
 
 volumes:
   postgres_data:

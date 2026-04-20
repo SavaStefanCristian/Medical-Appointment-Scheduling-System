@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import {environment} from '../../environments/environment';
 
 export interface RegisterDto {
   name: string;
@@ -25,7 +26,7 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = 'http://localhost:8080/api/Auth';
+  private baseUrl = `${environment.apiUrl}/Auth`;
 
   constructor(private http: HttpClient) {}
 
