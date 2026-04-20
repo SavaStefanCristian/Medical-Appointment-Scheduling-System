@@ -9,34 +9,44 @@
     <input type="text" placeholder="Cauta doctor..." [(ngModel)]="searchName" (input)="filterBySpecialty()" />
     <select [(ngModel)]="selectedSpecialty" (change)="filterBySpecialty()">
       <option value="">Toate specializarile</option>
-      <option *ngFor="let spec of specialties" [value]="spec">{{ spec }}</option>
+      @for (spec of specialties; track spec) {
+        <option [value]="spec">{{ spec }}</option>
+      }
     </select>
   </div>
 
   <div class="doctor-list">
-    <div *ngFor="let doc of filteredDoctors" class="doctor-card">
-      <img src="https://www.nicepng.com/png/detail/867-8678512_doctor-icon-physician.png" class="doctor-img" />
-      <h3>{{ doc.name }}</h3>
-      <p>Specializare: {{ doc.specialty }}</p>
-      <button (click)="bookAppointment(doc)">Book Appointment</button>
+    @for (doc of filteredDoctors; track doc) {
+      <div class="doctor-card">
+        <img src="https://www.nicepng.com/png/detail/867-8678512_doctor-icon-physician.png" class="doctor-img"
+        alt="Doctor Image"/>
+        <h3>{{ doc.name }}</h3>
+        <p>Specializare: {{ doc.specialty }}</p>
+        <button (click)="bookAppointment(doc)">Book Appointment</button>
+      </div>
+    }
+
+    @if (filteredDoctors.length === 0) {
+      <p>
+        Nu exista doctori pentru criteriile selectate.
+      </p>
+    }
+  </div>
+</div>
+
+@if (selectedDoctor) {
+  <div class="modal">
+    <div class="modal-content">
+      <h2>Programare la {{ selectedDoctor.name }}</h2>
+      <input type="datetime-local" [(ngModel)]="appointmentDate" />
+      <button (click)="confirmAppointment()">Confirmă</button>
+      <button class="secondary" (click)="selectedDoctor = null">Cancel</button>
+      @if (errorMessage) {
+        <p class="error">{{ errorMessage }}</p>
+      }
+      @if (successMessage) {
+        <p class="success">{{ successMessage }}</p>
+      }
     </div>
-
-    <p *ngIf="filteredDoctors.length === 0">
-      Nu exista doctori pentru criteriile selectate.
-    </p>
   </div>
-</div>
-
-<div class="modal" *ngIf="selectedDoctor">
-  <div class="modal-content">
-    <h2>Programare la {{ selectedDoctor.name }}</h2>
-
-    <input type="datetime-local" [(ngModel)]="appointmentDate" />
-
-    <button (click)="confirmAppointment()">Confirmă</button>
-    <button class="secondary" (click)="selectedDoctor = null">Cancel</button>
-
-    <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-    <p class="success" *ngIf="successMessage">{{ successMessage }}</p>
-  </div>
-</div>
+}

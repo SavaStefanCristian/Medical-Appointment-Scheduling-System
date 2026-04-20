@@ -1,16 +1,21 @@
 <div class="container">
   <h2>Programările mele</h2>
 
-  <div *ngFor="let a of appointments" class="card">
-    <p><strong>Doctor ID:</strong> {{ a.doctorId }}</p>
-    <p><strong>Data:</strong> {{ a.appointmentDate | date:'short' }}</p>
-    <p><strong>Status:</strong> {{ a.status }}</p>
+  @for (a of appointments; track a) {
+    <div class="card">
+      <p><strong>Doctor ID:</strong> {{ a.doctorId }}</p>
+      <p><strong>Data:</strong> {{ a.appointmentDate | date:'short' }}</p>
+      <p><strong>Status:</strong> {{ a.status }}</p>
+      @if (a.status === 'Pending' || a.status === 'Confirmed') {
+        <button
+          (click)="cancel(a.id)">
+          Cancel
+        </button>
+      }
+    </div>
+  }
 
-    <button *ngIf="a.status === 'Pending' || a.status === 'Confirmed'"
-            (click)="cancel(a.id)">
-      Cancel
-    </button>
-  </div>
-
-  <p *ngIf="appointments.length === 0">Nu ai programări.</p>
+  @if (appointments.length === 0) {
+    <p>Nu ai programări.</p>
+  }
 </div>

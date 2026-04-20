@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AppointmentService } from '../../services/appointment';
@@ -11,14 +11,12 @@ import { AppointmentService } from '../../services/appointment';
   styleUrls: ['./doctor-home.css']
 })
 export class DoctorHome implements OnInit {
+  private router = inject(Router);
+  private appointmentService = inject(AppointmentService);
+
 
   appointments: any[] = [];
-  doctorId: number = 0;
-
-  constructor(
-    private router: Router,
-    private appointmentService: AppointmentService
-  ) {}
+  doctorId = 0;
 
   ngOnInit() {
     const doctorId = localStorage.getItem('doctorId');

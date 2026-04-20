@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Appointment, AppointmentService } from '../../services/appointment';
 import { CommonModule } from '@angular/common';
 
@@ -10,10 +10,10 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./appointments.css']
 })
 export class Appointments implements OnInit {
+  private service = inject(AppointmentService);
+
   appointments: Appointment[] = [];
   errorMessage = '';
-
-  constructor(private service: AppointmentService) {}
 
   ngOnInit() {
     this.load();

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -26,9 +26,9 @@ export interface AuthResponse {
   providedIn: 'root'
 })
 export class AuthService {
-  private baseUrl = `${environment.apiUrl}/Auth`;
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {}
+  private baseUrl = `${environment.apiUrl}/Auth`;
 
   register(dto: RegisterDto): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(`${this.baseUrl}/register`, dto);

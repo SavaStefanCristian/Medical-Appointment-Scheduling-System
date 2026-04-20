@@ -1,12 +1,14 @@
 <div class="page-container">
-<div class="card">
-  <h2>Login</h2>
-  <input [(ngModel)]="email" placeholder="Email" type="email" />
-  <input [(ngModel)]="password" placeholder="Parolă" type="password" />
-  <button (click)="login()">Login</button>
-  <p>
-    Nu ai cont? <a routerLink="/register">Înregistrează-te</a>
-  </p>
-  <p class="error" *ngIf="errorMessage">{{ errorMessage }}</p>
-</div>
+  <div class="card">
+    <h2>Login</h2>
+    <input [(ngModel)]="email" placeholder="Email" type="email" />
+    <input [(ngModel)]="password" placeholder="Parolă" type="password" />
+    <button (click)="login()">Login</button>
+    <p>
+      Nu ai cont? <a routerLink="/register">Înregistrează-te</a>
+    </p>
+    @if (errorMessage) {
+      <p class="error">{{ errorMessage }}</p>
+    }
+  </div>
 </div>

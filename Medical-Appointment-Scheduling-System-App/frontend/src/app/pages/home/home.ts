@@ -1,18 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Doctor, DoctorService } from '../../services/doctor';
 import { AppointmentService } from '../../services/appointment';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class Home implements OnInit {
+  private doctorService = inject(DoctorService);
+  private router = inject(Router);
+  private appointmentService = inject(AppointmentService);
+
   doctors: Doctor[] = [];
   filteredDoctors: Doctor[] = [];
   specialties: string[] = [];
@@ -23,12 +27,6 @@ export class Home implements OnInit {
   appointmentDate = '';
   errorMessage = '';
   successMessage = '';
-
-  constructor(
-    private doctorService: DoctorService,
-    private router: Router,
-    private appointmentService: AppointmentService // 👈 ADD
-  ) {}
 
   ngOnInit() {
     this.loadDoctors();

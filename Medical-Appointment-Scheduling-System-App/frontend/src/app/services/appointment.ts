@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -19,10 +19,10 @@ export interface Appointment {
 
 @Injectable({ providedIn: 'root' })
 export class AppointmentService {
+  private http = inject(HttpClient);
+
 
   private baseUrl = `${environment.apiUrl}/Appointments`;
-
-  constructor(private http: HttpClient) {}
 
   createAppointment(dto: CreateAppointmentDto): Observable<any> {
     return this.http.post(this.baseUrl, dto);

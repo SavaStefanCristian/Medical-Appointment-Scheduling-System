@@ -1,22 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { Router, RouterModule } from '@angular/router';
-import { CommonModule } from '@angular/common';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [FormsModule, CommonModule, RouterModule],
+  imports: [FormsModule, RouterModule],
   templateUrl: './login.html',
   styleUrls: ['./login.css']
 })
 export class Login {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+
   email = '';
   password = '';
   errorMessage = '';
-
-  constructor(private authService: AuthService, private router: Router) {}
 
   login() {
     this.errorMessage = '';
