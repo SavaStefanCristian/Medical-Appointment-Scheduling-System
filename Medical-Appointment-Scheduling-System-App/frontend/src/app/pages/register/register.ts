@@ -24,7 +24,7 @@ export class Register {
   register() {
     const dto: RegisterDto = { name: this.name, phone: this.phone, email: this.email, password: this.password };
     this.authService.register(dto).subscribe({
-      next: res => {
+      next: () => {
         this.router.navigate(['/login']);
       },
       error: () => {
