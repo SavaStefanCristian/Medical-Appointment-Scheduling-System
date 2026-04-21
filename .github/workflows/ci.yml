@@ -68,6 +68,7 @@ jobs:
           sed -i "s|apiUrl:.*|apiUrl: 'http://localhost:8080/api',|g" ./Medical-Appointment-Scheduling-System-App/frontend/src/environments/environment.ts
 
       - name: Start Docker Compose Services
+        working-directory: ./Medical-Appointment-Scheduling-System-App
         run: docker compose --env-file .env.test up -d
 
       - name: Wait for API to be healthy
