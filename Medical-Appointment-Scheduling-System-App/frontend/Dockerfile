@@ -7,7 +7,9 @@ RUN npm ci
 
 COPY . .
 
-RUN npm run build -- --configuration=production
+ARG BUILD_CONFIGURATION=production
+
+RUN npm run build -- --configuration=$BUILD_CONFIGURATION
 
 FROM nginxinc/nginx-unprivileged:alpine
 
