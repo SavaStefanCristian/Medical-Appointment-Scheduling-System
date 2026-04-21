@@ -39,6 +39,8 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      args:
+        BUILD_CONFIGURATION: development
     container_name: medical-frontend
     ports:
       - "4200:8080"
