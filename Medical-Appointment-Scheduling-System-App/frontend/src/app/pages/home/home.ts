@@ -1,18 +1,23 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Doctor, DoctorService } from '../../services/doctor';
 import { AppointmentService } from '../../services/appointment';
-import { CommonModule } from '@angular/common';
+
 import { FormsModule } from '@angular/forms';
+import {HttpErrorResponse} from '@angular/common/http';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './home.html',
   styleUrls: ['./home.css']
 })
 export class Home implements OnInit {
+  private doctorService = inject(DoctorService);
+  private router = inject(Router);
+  private appointmentService = inject(AppointmentService);
+
   doctors: Doctor[] = [];
   filteredDoctors: Doctor[] = [];
   specialties: string[] = [];
@@ -23,12 +28,6 @@ export class Home implements OnInit {
   appointmentDate = '';
   errorMessage = '';
   successMessage = '';
-
-  constructor(
-    private doctorService: DoctorService,
-    private router: Router,
-    private appointmentService: AppointmentService // 👈 ADD
-  ) {}
 
   ngOnInit() {
     this.loadDoctors();
@@ -41,7 +40,7 @@ export class Home implements OnInit {
         this.filteredDoctors = data;
         this.specialties = Array.from(new Set(data.map(d => d.specialty)));
       },
-      error: (err) => console.error('Eroare la preluarea doctorilor', err)
+      error: (err: HttpErrorResponse) => console.error('Eroare la preluarea doctorilor', err)
     });
   }
 
@@ -95,7 +94,7 @@ export class Home implements OnInit {
         this.successMessage = 'Programare creată cu succes!';
         this.selectedDoctor = null;
       },
-      error: (err) => {
+      error: (err: HttpErrorResponse) => {
         this.errorMessage = err.error || 'Eroare la programare.';
       }
     });

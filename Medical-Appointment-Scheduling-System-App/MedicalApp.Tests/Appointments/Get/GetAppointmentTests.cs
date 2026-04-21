@@ -22,8 +22,10 @@ namespace MedicalApp.Tests.Appointments.Get
 
             var appointment = new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(3), Status = "Pending"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(3),
+                Status = "Pending"
             };
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
@@ -46,8 +48,10 @@ namespace MedicalApp.Tests.Appointments.Get
 
             var appointment = new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(3), Status = "Pending"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(3),
+                Status = "Pending"
             };
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
@@ -87,8 +91,10 @@ namespace MedicalApp.Tests.Appointments.Get
 
             _context.Appointments.Add(new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(1), Status = "Pending"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(1),
+                Status = "Pending"
             });
             await _context.SaveChangesAsync();
 

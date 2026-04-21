@@ -23,8 +23,10 @@ namespace MedicalApp.Tests.Appointments.Status
 
             var appointment = new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(3), Status = "Pending"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(3),
+                Status = "Pending"
             };
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
@@ -49,8 +51,10 @@ namespace MedicalApp.Tests.Appointments.Status
 
             var appointment = new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(3), Status = "Confirmed"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(3),
+                Status = "Confirmed"
             };
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
@@ -75,8 +79,10 @@ namespace MedicalApp.Tests.Appointments.Status
 
             var appointment = new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(3), Status = "Pending"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(3),
+                Status = "Pending"
             };
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
@@ -99,8 +105,10 @@ namespace MedicalApp.Tests.Appointments.Status
 
             var appointment = new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(3), Status = "Cancelled"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(3),
+                Status = "Cancelled"
             };
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
@@ -123,8 +131,10 @@ namespace MedicalApp.Tests.Appointments.Status
 
             var appointment = new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(3), Status = "Completed"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(3),
+                Status = "Completed"
             };
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
@@ -147,8 +157,10 @@ namespace MedicalApp.Tests.Appointments.Status
 
             var appointment = new Appointment
             {
-                DoctorId = doctor.Id, PatientId = patient.Id,
-                AppointmentDate = DateTime.UtcNow.AddDays(3), Status = "Pending"
+                DoctorId = doctor.Id,
+                PatientId = patient.Id,
+                AppointmentDate = DateTime.UtcNow.AddDays(3),
+                Status = "Pending"
             };
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();

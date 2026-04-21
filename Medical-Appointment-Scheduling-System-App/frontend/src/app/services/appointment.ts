@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import {environment} from '../../environments/environment';
@@ -19,28 +19,28 @@ export interface Appointment {
 
 @Injectable({ providedIn: 'root' })
 export class AppointmentService {
+  private http = inject(HttpClient);
+
 
   private baseUrl = `${environment.apiUrl}/Appointments`;
 
-  constructor(private http: HttpClient) {}
-
-  createAppointment(dto: CreateAppointmentDto): Observable<any> {
-    return this.http.post(this.baseUrl, dto);
+  createAppointment(dto: CreateAppointmentDto): Observable<Appointment> {
+    return this.http.post<Appointment>(this.baseUrl, dto);
   }
 
-  getDoctorAppointments(doctorId: number): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}/doctor/${doctorId}`);
+  getDoctorAppointments(doctorId: number): Observable<Appointment[]> {
+    return this.http.get<Appointment[]>(`${this.baseUrl}/doctor/${doctorId}`);
   }
 
   getMyAppointments(): Observable<Appointment[]> {
     return this.http.get<Appointment[]>(`${this.baseUrl}/my`);
   }
 
-  cancelAppointment(id: number): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/${id}/cancel`, {});
+  cancelAppointment(id: number): Observable<Appointment> {
+    return this.http.patch<Appointment>(`${this.baseUrl}/${id}/cancel`, {});
   }
 
-  updateStatus(id: number, status: string): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/${id}/status`, { status });
+  updateStatus(id: number, status: string): Observable<Appointment> {
+    return this.http.patch<Appointment>(`${this.baseUrl}/${id}/status`, { status });
   }
 }

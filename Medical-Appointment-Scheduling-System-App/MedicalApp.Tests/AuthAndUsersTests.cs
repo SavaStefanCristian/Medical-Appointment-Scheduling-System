@@ -157,4 +157,4 @@ namespace MedicalApp.Tests
             Assert.Equal("Admin", authorizeAttr.Roles);
         }
     }
-}   
+}
