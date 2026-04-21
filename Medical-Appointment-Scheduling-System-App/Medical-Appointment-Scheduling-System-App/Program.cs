@@ -29,11 +29,14 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         };
     });
 
+if (string.IsNullOrEmpty(builder.Configuration["FrontendUrl"]))
+    throw new Exception("Missing FrontendUrl");
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AngularCorsPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
+        policy.WithOrigins(builder.Configuration["FrontendUrl"]!)
               .AllowAnyHeader()
               .AllowAnyMethod()
               .AllowCredentials();
