@@ -15,9 +15,9 @@
 
 | Layer | Tehnologie | Port |
 |---|---|---|
-| Frontend | Angular 19 | 4200 |
+| Frontend | Angular 20 | 4200 |
 | Backend | ASP.NET Core 8 | 8080 |
-| Database | PostgreSQL 15 | 5432 |
+| Database | PostgreSQL 18 | 5432 |
 
 - **Containerizare:** Docker + Docker Compose
 - **CI/CD:** GitHub Actions (Build → Lint → Test → Deploy)
