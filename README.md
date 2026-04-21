@@ -21,7 +21,7 @@
 
 - **Containerizare:** Docker + Docker Compose
 - **CI/CD:** GitHub Actions (Build → Lint → Test → Deploy)
-- **Cloud:** [LINK_DEPLOY_AICI]
+- **Cloud:** https://medical-appointment-scheduling-system-0ytp.onrender.com
 - **Management:** [GitHub Projects Board](https://github.com/users/SavaStefanCristian/projects/4)
 
 ## 📋 Funcționalități
